@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  mysql-db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  php-laravel:
+    image: my-php-laravel-app
+    container_name: my-php-laravel
+    ports:
+      - 8000:8000
+    depends_on:
+      - mysql-db
+    # working_dir: /var/www/html/myApp
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+volumes:
+  mysql-data:
+  
